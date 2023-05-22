@@ -1,24 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import Box from "@mui/material/Box";
+import { getData } from "./api/data";
+import MediaCard from "./components/card";
 
 function App() {
+  const [d, setData] = useState([]);
+  async function getDataFromApi() {
+    const { data } = await getData();
+    if (data) {
+      setData(data);
+    }
+  }
+  
+  useEffect(() => {
+    getDataFromApi();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Box>
+      {d.map((item) => (
+        <MediaCard name={item.name} avatar={item.avatar} />
+      ))}
+    </Box>
   );
 }
 
